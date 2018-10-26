@@ -29,11 +29,13 @@ describe('Probot', () => {
     beforeAll(() => {
       process.env.APP_ID = '1'
       process.env.PRIVATE_KEY_PATH = path.join(__dirname, 'test-private-key.pem')
+      process.env.WEBHOOK_PROXY_URL = 'https://smee.io/EfHXC9BFfGAxbM6J'
     })
 
     afterAll(() => {
       delete process.env.APP_ID
       delete process.env.PRIVATE_KEY
+      delete process.env.WEBHOOK_PROXY_URL
     })
 
     it('runs with an array of strings', async () => {
