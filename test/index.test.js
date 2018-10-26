@@ -36,6 +36,7 @@ describe('Probot', () => {
       delete process.env.APP_ID
       delete process.env.PRIVATE_KEY
       delete process.env.WEBHOOK_PROXY_URL
+      delete process.env.PORT
     })
 
     it('runs with an array of strings', async () => {
@@ -44,6 +45,7 @@ describe('Probot', () => {
     })
 
     it('runs with a function as argument', async () => {
+      process.env.PORT = '3003'
       let initialized = false
       const probot = await Probot.run((app) => {
         initialized = true
