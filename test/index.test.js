@@ -1,7 +1,8 @@
-const {createProbot} = require('../src')
+const { Probot, createProbot } = require('../src')
 const request = require('supertest')
 const nock = require('nock')
 const helper = require('./apps/helper')
+const path = require('path')
 
 describe('Probot', () => {
   let probot
@@ -21,6 +22,33 @@ describe('Probot', () => {
     createProbot({ githubToken: 'faketoken' })
     // probot with id/cert
     createProbot({ id: 1234, cert: 'xxxx' })
+  })
+
+  describe('run', () => {
+
+    beforeAll(() => {
+      process.env.APP_ID = '1'
+      process.env.PRIVATE_KEY_PATH = path.join(__dirname, 'test-private-key.pem')
+    })
+
+    afterAll(() => {
+      delete process.env.APP_ID
+      delete process.env.PRIVATE_KEY
+    })
+
+    it('runs with an array of strings', async () => {
+      const probot = await Probot.run(['run', 'file.js'])
+      expect(probot.options).toMatchSnapshot()
+    })
+
+    it('runs with a function as argument', async () => {
+      let initialized = false
+      const probot = await Probot.run((app) => {
+        initialized = true
+      })
+      expect(probot.options).toMatchSnapshot()
+      expect(initialized).toBeTruthy()
+    })
   })
 
   describe('webhook delivery', () => {

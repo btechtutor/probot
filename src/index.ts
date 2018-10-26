@@ -76,6 +76,8 @@ export class Probot {
       probot.load(appFn)
     }
     probot.start()
+
+    return probot
   }
 
   public server: express.Application
